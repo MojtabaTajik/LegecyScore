@@ -63,10 +63,13 @@ const scores = {
 };
 
 function calculateScore() {
+    // Calculate weighted average on a 1-5 scale
     const rawScore = Object.entries(scores).reduce((acc, [key, value]) => {
         return acc + value * weights[key];
     }, 0);
-    return (rawScore - 1) * 25;
+    
+    // Convert to percentage (1-5 scale to 0-100%)
+    return ((rawScore - 1) / 4) * 100;
 }
 
 function getScoreColor(score) {
@@ -97,8 +100,8 @@ function updateChart() {
 
 function initializeChart() {
     const ctx = document.getElementById('scoreChart').getContext('2d');
-    const initialScore = calculateScore(); // Calculate initial score
-    const initialColor = getScoreColor(initialScore); // Get initial color
+    const initialScore = calculateScore();
+    const initialColor = getScoreColor(initialScore);
     
     chart = new Chart(ctx, {
         type: 'doughnut',
