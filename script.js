@@ -1,24 +1,10 @@
 const descriptions = {
-    modernIncompatibility: [
-        "State-of-the-Art",
-        "Slightly Incompatible",
-        "Moderately Incompatible",
-        "Substantially Incompatible",
-        "Highly Incompatible"
-    ],
     technologyObsolescence: [
         "Cutting-Edge",
         "Slightly Outdated",
         "Outdated",
         "Severely Outdated",
         "Legacy-Only"
-    ],
-    skillShortage: [
-        "Widely Available",
-        "Somewhat Available",
-        "Specialized",
-        "Niche",
-        "Obsolete"
     ],
     legacyVendorDependence: [
         "No Dependency",
@@ -27,12 +13,12 @@ const descriptions = {
         "Heavy Dependency",
         "Full Dependency"
     ],
-    maintenanceEffort: [
-        "Minimal Effort & Cost",
-        "Low Effort & Cost",
-        "Moderate Effort & Cost",
-        "High Effort & Cost",
-        "Extremely High Effort & Cost"
+    modernIncompatibility: [
+        "State-of-the-Art",
+        "Slightly Incompatible",
+        "Moderately Incompatible",
+        "Substantially Incompatible",
+        "Highly Incompatible"
     ],
     securityVulnerabilities: [
         "Highly Secure",
@@ -47,28 +33,33 @@ const descriptions = {
         "Moderate",
         "Limited",
         "Severely Limited"
+    ],
+    maintenanceEffort: [
+        "Minimal Effort & Cost",
+        "Low Effort & Cost",
+        "Moderate Effort & Cost",
+        "High Effort & Cost",
+        "Extremely High Effort & Cost"
     ]
 };
 
 const weights = {
+    technologyObsolescence: 0.2,
+    legacyVendorDependence: 0.2,
     modernIncompatibility: 0.15,
-    technologyObsolescence: 0.15,
-    skillShortage: 0.15,
-    legacyVendorDependence: 0.15,
-    maintenanceEffort: 0.15,
     securityVulnerabilities: 0.15,
-    scalabilityLimitations: 0.10
+    scalabilityLimitations: 0.15,
+    maintenanceEffort: 0.15
 };
 
 let chart;
 const scores = {
-    modernIncompatibility: 3,
     technologyObsolescence: 3,
-    skillShortage: 3,
     legacyVendorDependence: 3,
-    maintenanceEffort: 3,
+    modernIncompatibility: 3,
     securityVulnerabilities: 3,
-    scalabilityLimitations: 3
+    scalabilityLimitations: 3,
+    maintenanceEffort: 3
 };
 
 function calculateScore() {
@@ -106,12 +97,15 @@ function updateChart() {
 
 function initializeChart() {
     const ctx = document.getElementById('scoreChart').getContext('2d');
+    const initialScore = calculateScore(); // Calculate initial score
+    const initialColor = getScoreColor(initialScore); // Get initial color
+    
     chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
-                data: [75, 25],
-                backgroundColor: ['#eab308', '#e5e7eb'],
+                data: [initialScore, 100 - initialScore],
+                backgroundColor: [initialColor, '#e5e7eb'],
                 borderWidth: 0,
                 circumference: 180,
                 rotation: 270,
